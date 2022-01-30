@@ -1,0 +1,134 @@
+<div class="card-body">
+  <form name="form" novalidate (ngSubmit)="submitForm(f.value)" #f="ngForm">
+    <div class="alert" *ngIf="hasAPIError || hasResponseError">
+      <div *ngIf="hasAPIError">
+        <p>{{ errorStatus }}</p>
+        <p>{{ errorMessage }}</p>
+      </div>
+      <div *ngIf="hasResponseError" >
+        <p *ngFor="let errorField of errorFields">{{ errorField.message }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <label>Monthly Income</label>
+      <input
+        type="number"
+        name="monthlyIncome"
+        class="form-control"
+        ngModel
+        #monthlyIncome="ngModel"
+        required
+        min="500000"
+      />
+      <div
+        *ngIf="monthlyIncome.invalid && monthlyIncome.touched"
+        class="error-text"
+      >
+        <div *ngIf="monthlyIncome.errors.required">
+          Monthly Income is Required
+        </div>
+        <div *ngIf="monthlyIncome.errors.min">
+          Monthly Income should be more than or equal to 500000
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Requested Amount</label>
+      <input
+        type="number"
+        name="requestedAmount"
+        class="form-control"
+        ngModel
+        #requestedAmount="ngModel"
+        required
+        min="20000000"
+      />
+      <div
+        *ngIf="requestedAmount.invalid && requestedAmount.touched"
+        class="error-text"
+      >
+        <div *ngIf="requestedAmount.errors.required">
+          Requested Amount is Required
+        </div>
+        <div *ngIf="requestedAmount.errors.min">
+          Requested Amount should be more than or equal to 20000000
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Loan Term</label>
+      <input
+        type="number"
+        name="loanTerm"
+        class="form-control"
+        ngModel
+        #loanTerm="ngModel"
+        required
+        min="36"
+        max="360"
+      />
+      <div *ngIf="loanTerm.invalid && loanTerm.touched" class="error-text">
+        <div *ngIf="loanTerm.errors.required">Loan Term is Required</div>
+        <div *ngIf="loanTerm.errors.min">
+          Loan Term should be more than or equal to 36 months
+        </div>
+        <div *ngIf="loanTerm.errors.max">
+          Loan Term should be less than or equal to 360 months
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Children</label>
+      <select
+        name="children"
+        class="form-control"
+        ngModel
+        #children="ngModel"
+        required
+      >
+        <option value=""></option>
+        <option value="NONE">NONE</option>
+        <option value="SINGLE">SINGLE</option>
+        <option value="MULTIPLE">MULTIPLE</option>
+      </select>
+      <div *ngIf="children.invalid && children.touched" class="error-text">
+        <div *ngIf="children.errors.required">Children is Required</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Co-Applicant</label>
+      <select
+        name="coapplicant"
+        class="form-control"
+        ngModel
+        #coapplicant="ngModel"
+        required
+      >
+        <option value=""></option>
+        <option value="NONE">NONE</option>
+        <option value="SINGLE_BORROWER">SINGLE BORROWER</option>
+        <option value="MULTIPLE_BORROWERS">MULTIPLE BORROWERS</option>
+      </select>
+      <div
+        *ngIf="coapplicant.invalid && coapplicant.touched"
+        class="error-text"
+      >
+        <div *ngIf="coapplicant.errors.required">Co-Applicant is Required</div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button [disabled]="f.invalid">
+        CALCULATE LOAN
+      </button>
+    </div>
+    <div *ngIf="loanData != null">
+      <p>Loan Amount : {{ loanAmount }}</p>
+      <p>Interest Rate : {{ interestRate }}</p>
+    </div>
+  </form>
+</div>
